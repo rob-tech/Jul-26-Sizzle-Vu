@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+  
+</head>
+
+<style>
+#mySpinner {
+    width: 1.5rem;
+    height: 1.5rem;
+    vertical-align: middle;
+}
+.invisible {
+    display: none;
+}
+</style>
+
+
+<body>
+
+
+    <div class="container">
+        <h1>Movie</h1>
+     
+    </div>
+
+    <div class="container" id="newMovie">
+        <div class="row">
+            <div class="col-md-6">
+                <form  onsubmit='handleSubmit()'>
+                    <div class="form-group">
+                        <label for="name">Title</label>
+                        <input type="text" class="form-control" id="name" placeholder="Movie Title" required/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" placeholder="Movie Description"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <textarea class="form-control" id="category" placeholder="Movie category" rows="1"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imageUrl">Image Url</label>
+                        <textarea class="form-control" id="imageUrl" placeholder="Image" rows="1"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Add New Movie" />
+                        <!-- <div id = "mySpinner" class="spinner-border text-danger invisible" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div> -->
+                    </div>
+
+                    <div class="form-group">
+                      <a href = "displayMovies.html?category=" + movies.category> <a href = "displayMovies.html?id=" + movies._id><input type="button" class="btn btn-primary"  value="All Movies" /></a></a> 
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="fetch.js"></script>
+  
+    <script>
+var movies=[];
+var id = null;
+   
+window.onload = async () => {
+
+      
+        movies = await getMovies();
+            handleSubmit = () => {
+            event.preventDefault();
+            addNew();
+           
+        }
+ 
+    }
+        addNew = async () => {
+            var spinner = document.querySelector("#mySpinner");
+            // await spinner.classList.toggle("invisible");
+         
+            var newMovie = {
+                name: document.querySelector("#name").value,
+                description: document.querySelector("#description").value,
+                category: document.querySelector("#category").value,
+                imageUrl: document.querySelector("#imageUrl").value,
+              
+            };
+          
+            const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
+            let headers = new Headers();
+            headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==')
+            headers.set("Content-Type","application/json")
+            var response = await fetch(url,{
+            method: "POST",
+            body: JSON.stringify(newMovie),
+            headers:headers
+        })
+   
+
+        var json = await response.json();
+                // await spinner.classList.toggle("invisible");
+     
+            if(response.ok){
+                alert("Movie was added successfully!")
+                movies.push(json)
+                console.log(movies)
+            } else{
+                alert("Movie was not added successfully!")
+            }
+
+
+        };
+
+
+
+       // window.location.href = "Products.html?id=" + products._id -> if i want the page to redirect at end of funciton
+         //     var response = await fetch(category ? url + category :url +id,{ 
+        //         method: category ? 'POST': 'PUT', 
+        //         body: JSON.stringify(newMovie),
+        //         headers: headers,
+        // })
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

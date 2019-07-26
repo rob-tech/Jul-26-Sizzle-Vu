@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<style>
+
+</style>
+
+<body>
+    <script src="fetch.js"></script>
+
+    <nav class="navbar navbar-light  justify-content-between">
+        <a class="navbar-brand" href="#"><img src="./Capture.PNG" width="100px"></a>
+        <form class="form-inline">
+            <a href="index.html"><button class="btn btn-outline-success my-2 my-sm-0" type="button">Add Movie</button></a>
+        </form>
+    </nav>
+
+    <div class="container-fluid my-5" id="currentMovies">
+       
+    </div>
+
+  
+
+    <script>
+        var movies = [];
+        var id = null;
+        var category = null;
+
+
+        window.onload = async () => {
+
+            var urlParams = new URLSearchParams(window.location.search);
+            id = urlParams.get("id");
+            category = urlParams.get("category");
+            const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
+            movies = await getMovies(id);
+            var movieCategory = await getMovies (category);
+            console.log(movieCategory)
+
+
+            var currentMovies = document.querySelector("#currentMovies");
+                
+            if (movieCategory.length > 0) {
+                currentMovies.innerHTML = movieCategory.map(movie => `
+                <div class="row">
+                    <h3>Genre: ${movie._category}</h3>
+                </div>
+               <div class="row dim-row">
+                 <div class="col-12 col-sm-12">
+                   <div id="Carousel-1" class="carousel slide w-caro" data-interval="false" data-ride="carousel">
+                     <div class="carousel-inner w-100" role="listbox">
+                       <div class="carousel-item row no-gutters active">
+                         <div class="col-2 float-left"><img class="img-fluid h-size" src="${movie.imageUrl}">
+                            <h6>Title: ${movie.name}</h6>
+                            <h6>Description: ${movie.description}</h6>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteEvent('${movie._id}')">Delete</button> 
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editEvent('${movie._id}')">Edit</button> 
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+                   </div>
+                </div> 
+                `).join("");                              
+            }
+            else {
+                currentMovies.innerHTML = "No Movies"
+            }
+
+        };
+
+
+        // deleteEvent = async (id) => {
+        //     let headers = new Headers();
+        //     headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==');
+        //     await fetch(
+        //         `https://cors-anywhere.herokuapp.com/https://strive-school-testing-apis.herokuapp.com/api/product/${id}`,
+        //         {
+        //             method: "DELETE",
+        //             headers: headers
+        //         }
+        //     );
+        //     location.assign("Products.html");
+        // };
+
+
+
+        // editEvent = (id) => (location.href = "index.html?id=" + id)
+
+    </script>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
