@@ -5,17 +5,15 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <style>
 
 </style>
 
 <body>
+
     <script src="fetch.js"></script>
 
     <nav class="navbar navbar-light  justify-content-between">
@@ -34,26 +32,34 @@
     <script>
         var movies = [];
         var id = null;
-        var category = null;
+        // var category = null;
+        const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
+
 
 
         window.onload = async () => {
 
             var urlParams = new URLSearchParams(window.location.search);
             id = urlParams.get("id");
-            category = urlParams.get("category");
-            const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
-            movies = await getMovies(id);
-            var movieCategory = await getMovies (category);
-            console.log(movieCategory)
+            // category = urlParams.get("category");
+       
+            var categories = await getMovies(url);
+       
+            console.log(categories)
+
+            categories.forEach(async category => {
+           
+           
+                movies = await getMovies(url + category);
+    
+                var currentMovies = document.querySelector("#currentMovies");
 
 
-            var currentMovies = document.querySelector("#currentMovies");
-                
-            if (movieCategory.length > 0) {
-                currentMovies.innerHTML = movieCategory.map(movie => `
+     
+        //  if (movies.length > 0) {
+                currentMovies.innerHTML = movies.map(movie => `
                 <div class="row">
-                    <h3>Genre: ${movie._category}</h3>
+                    <h3>Genre: ${movie.category}</h3>
                 </div>
                <div class="row dim-row">
                  <div class="col-12 col-sm-12">
@@ -61,10 +67,10 @@
                      <div class="carousel-inner w-100" role="listbox">
                        <div class="carousel-item row no-gutters active">
                          <div class="col-2 float-left"><img class="img-fluid h-size" src="${movie.imageUrl}">
-                            <h6>Title: ${movie.name}</h6>
-                            <h6>Description: ${movie.description}</h6>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteEvent('${movie._id}')">Delete</button> 
+                            <h6>Title: ${movie.name}</h6><button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteEvent('${movie._id}')">Delete</button> 
                             <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editEvent('${movie._id}')">Edit</button> 
+                            <h6>Description: ${movie.description}</h6>
+                            
                          </div>
                        </div>
                      </div>
@@ -72,11 +78,24 @@
                    </div>
                 </div> 
                 `).join("");                              
-            }
-            else {
-                currentMovies.innerHTML = "No Movies"
-            }
+            })
+            // else {
+            //     currentMovies.innerHTML = "No Movies"
+            // }
 
+
+
+
+
+
+
+            // movies = await getMovies(id);
+            // var movieCategory = await getMovies (category);
+            // console.log(movieCategory)
+
+
+     
+           
         };
 
 

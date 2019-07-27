@@ -6,10 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!-- Bootstrap CSS -->
   
 </head>
 
@@ -66,7 +64,7 @@
                     </div>
 
                     <div class="form-group">
-                      <a href = "displayMovies.html?category=" + movies.category> <a href = "displayMovies.html?id=" + movies._id><input type="button" class="btn btn-primary"  value="All Movies" /></a></a> 
+                      <a href = "displayMovies.html?=" + movies.category> <a href = "displayMovies.html?id=" + movies._id><input type="button" class="btn btn-primary"  value="All Movies" /></a></a> 
                         </div>
                 </form>
             </div>
@@ -113,8 +111,10 @@ window.onload = async () => {
         })
    
 
-        var json = await response.json();
+
+            var json = await response.json();
                 // await spinner.classList.toggle("invisible");
+                
      
             if(response.ok){
                 alert("Movie was added successfully!")
@@ -123,7 +123,6 @@ window.onload = async () => {
             } else{
                 alert("Movie was not added successfully!")
             }
-
 
         };
 
