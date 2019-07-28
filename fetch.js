@@ -1,12 +1,32 @@
-getMovies = async () => {
-    let url = ` https://strive-school-testing-apis.herokuapp.com/api/movies/`
-    let headers = new Headers();
-    headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==')
+const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
+let headers = new Headers();
+headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==')
+headers.set("Content-Type","application/json")
+
+
+getCategories = async () => {
     var response = await fetch(url, { method: 'GET', headers: headers });
     response = await response.json();
-    return response
+    return response   
+}
+
+addMovies = async () => {
+var response = await fetch(url, {method: "POST", body: JSON.stringify(newMovie), headers:headers})
+response = await response.json();
+return response
+}
+
+getMovies = async category => {
+    var response = await fetch(url + category, { method: 'GET', headers: headers });
+    response = await response.json();
+    return response   
+}
+
+deleteMovies = async id => {
+     await fetch(url + id, { method: 'DELETE', headers: headers });
 
 }
+
 
 
 

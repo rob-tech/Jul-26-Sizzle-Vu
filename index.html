@@ -8,18 +8,19 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
+
 </head>
 
 <style>
-#mySpinner {
-    width: 1.5rem;
-    height: 1.5rem;
-    vertical-align: middle;
-}
-.invisible {
-    display: none;
-}
+    #mySpinner {
+        width: 1.5rem;
+        height: 1.5rem;
+        vertical-align: middle;
+    }
+
+    .invisible {
+        display: none;
+    }
 </style>
 
 
@@ -28,16 +29,16 @@
 
     <div class="container">
         <h1>Movie</h1>
-     
+
     </div>
 
     <div class="container" id="newMovie">
         <div class="row">
             <div class="col-md-6">
-                <form  onsubmit='handleSubmit()'>
+                <form onsubmit='handleSubmit()'>
                     <div class="form-group">
                         <label for="name">Title</label>
-                        <input type="text" class="form-control" id="name" placeholder="Movie Title" required/>
+                        <input type="text" class="form-control" id="name" placeholder="Movie Title" required />
                     </div>
 
                     <div class="form-group">
@@ -64,63 +65,53 @@
                     </div>
 
                     <div class="form-group">
-                      <a href = "displayMovies.html?=" + movies.category> <a href = "displayMovies.html?id=" + movies._id><input type="button" class="btn btn-primary"  value="All Movies" /></a></a> 
-                        </div>
+                        <a href="displayMovies.html?category=" + movies.category>  <a href="displayMovies.html?id=" + movies._id><input type="button"
+                                class="btn btn-primary" value="All Movies" /></a></a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
     <script src="fetch.js"></script>
-  
-    <script>
-var movies=[];
-var id = null;
-   
-window.onload = async () => {
 
-      
-        movies = await getMovies();
-            handleSubmit = () => {
-            event.preventDefault();
-            addNew();
-           
+    <script>
+        var movies = [];
+        var id = null;
+        var category = null;
+
+        window.onload = async () => {
+
+                handleSubmit = () => {
+                event.preventDefault();
+                addNew();
+            }
+            
+          
         }
- 
-    }
+        
         addNew = async () => {
             var spinner = document.querySelector("#mySpinner");
             // await spinner.classList.toggle("invisible");
-         
+
             var newMovie = {
                 name: document.querySelector("#name").value,
                 description: document.querySelector("#description").value,
                 category: document.querySelector("#category").value,
                 imageUrl: document.querySelector("#imageUrl").value,
-              
+
             };
-          
-            const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
-            let headers = new Headers();
-            headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==')
-            headers.set("Content-Type","application/json")
-            var response = await fetch(url,{
-            method: "POST",
-            body: JSON.stringify(newMovie),
-            headers:headers
-        })
-   
 
 
-            var json = await response.json();
-                // await spinner.classList.toggle("invisible");
-                
-     
-            if(response.ok){
+            await addMovies(newMovie);
+
+            // await spinner.classList.toggle("invisible");
+
+            if (response.ok) {
                 alert("Movie was added successfully!")
                 movies.push(json)
                 console.log(movies)
-            } else{
+            } else {
                 alert("Movie was not added successfully!")
             }
 

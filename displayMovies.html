@@ -6,9 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <style>
+    .img-fluid {
+        /* position: relative;
+    float: left; */
+        display: block;
+        width: 350px;
+        height: 350px;
+
+    }
+
 
 </style>
 
@@ -19,98 +28,90 @@
     <nav class="navbar navbar-light  justify-content-between">
         <a class="navbar-brand" href="#"><img src="./Capture.PNG" width="100px"></a>
         <form class="form-inline">
-            <a href="index.html"><button class="btn btn-outline-success my-2 my-sm-0" type="button">Add Movie</button></a>
+            <a href="index.html"><button class="btn btn-outline-success my-2 my-sm-0" type="button">Add
+                    Movie</button></a>
         </form>
     </nav>
 
-    <div class="container-fluid my-5" id="currentMovies">
-       
+    <div class="container-fluid my-3" id="currentMovies">
+
     </div>
 
-  
 
     <script>
         var movies = [];
         var id = null;
-        // var category = null;
-        const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
-
+        var category = null;
+        // const url = `https://strive-school-testing-apis.herokuapp.com/api/movies/`
 
 
         window.onload = async () => {
 
             var urlParams = new URLSearchParams(window.location.search);
             id = urlParams.get("id");
-            // category = urlParams.get("category");
-       
-            var categories = await getMovies(url);
-       
+
+            category = urlParams.get("category");
+            var categories = await getCategories();
             console.log(categories)
 
             categories.forEach(async category => {
-           
-           
-                movies = await getMovies(url + category);
-    
+
+                movies = await getMovies(category);
+                console.log(movies)
+
                 var currentMovies = document.querySelector("#currentMovies");
+                var rowTitle = document.createElement("div");   
+                rowTitle.classList.add("row")
+                var title = document.createElement("h3")   
+                title.innerHTML = category
+                rowTitle.appendChild(title)     
+                currentMovies.appendChild(rowTitle)
+                var row = document.createElement("div")
+                row.classList.add("row")
+                var col = document.createElement("div")
+                col.classList.add("col-12", "col-sm-12")
+                var carousel = document.createElement("div");  
+                carousel.classList.add("carousel", "slide", "w-caro");
+                var carouselInner = document.createElement("div");
+                carouselInner.classList.add("carousel-inner", "w-100")
+                var carouselItems = document.createElement("div")
+                carouselItems.classList.add("carousel-item", "row", "no-gutters", "active")
 
+                movies.forEach((movie) => {
 
-     
-        //  if (movies.length > 0) {
-                currentMovies.innerHTML = movies.map(movie => `
-                <div class="row">
-                    <h3>Genre: ${movie.category}</h3>
-                </div>
-               <div class="row dim-row">
-                 <div class="col-12 col-sm-12">
-                   <div id="Carousel-1" class="carousel slide w-caro" data-interval="false" data-ride="carousel">
-                     <div class="carousel-inner w-100" role="listbox">
-                       <div class="carousel-item row no-gutters active">
-                         <div class="col-2 float-left"><img class="img-fluid h-size" src="${movie.imageUrl}">
-                            <h6>Title: ${movie.name}</h6><button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteEvent('${movie._id}')">Delete</button> 
-                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editEvent('${movie._id}')">Edit</button> 
-                            <h6>Description: ${movie.description}</h6>
-                            
-                         </div>
-                       </div>
-                     </div>
-                    </div>
-                   </div>
-                </div> 
-                `).join("");                              
-            })
-            // else {
-            //     currentMovies.innerHTML = "No Movies"
-            // }
+                    carouselItems.innerHTML += `
+                  
+                                <div class="col-2 float-left">
+                                <img class="img-fluid" src="${movie.imageUrl}">
+                                <h6>Title: ${movie.name}</h6>
+                                <p>Description: ${movie.description}</p><br>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteEvent('${movie._id}')">Delete</button> 
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editEvent('${movie._id}')">Edit</button> 
+                                </div>
+                                                         
+                                `                              
+                });
+              
+ 
+                var div2 = document.createElement("div")
+                div2.innerHTML += ``
 
-
-
-
-
-
-
-            // movies = await getMovies(id);
-            // var movieCategory = await getMovies (category);
-            // console.log(movieCategory)
-
-
-     
-           
+              carouselInner.appendChild(div2)
+              carouselInner.appendChild(carouselItems)
+              carousel.appendChild(carouselInner)
+              col.appendChild(carousel)
+              row.appendChild(col)
+              currentMovies.appendChild(row)
+    
+            });
+         
         };
 
 
-        // deleteEvent = async (id) => {
-        //     let headers = new Headers();
-        //     headers.set('Authorization', 'Basic ' + 'dXNlcjc6M1VVNWRZRnZlblJ1UlA3RQ==');
-        //     await fetch(
-        //         `https://cors-anywhere.herokuapp.com/https://strive-school-testing-apis.herokuapp.com/api/product/${id}`,
-        //         {
-        //             method: "DELETE",
-        //             headers: headers
-        //         }
-        //     );
-        //     location.assign("Products.html");
-        // };
+        deleteEvent = async (id) => {
+            deleteMovies(id)
+            location.assign("displayMovies.html");
+        };
 
 
 
@@ -134,10 +135,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
