@@ -81,7 +81,6 @@
         var category = null;
 
         window.onload = async () => {
-
                 handleSubmit = () => {
                 event.preventDefault();
                 addNew();
@@ -104,12 +103,12 @@
 
 
             await addMovies(newMovie);
-
+       
             // await spinner.classList.toggle("invisible");
 
-            if (response.ok) {
+            if (newMovie.ok) {
                 alert("Movie was added successfully!")
-                movies.push(json)
+                movies.push(newMovie)
                 console.log(movies)
             } else {
                 alert("Movie was not added successfully!")

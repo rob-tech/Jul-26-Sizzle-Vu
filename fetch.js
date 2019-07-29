@@ -5,26 +5,26 @@ headers.set("Content-Type","application/json")
 
 
 getCategories = async () => {
-    var response = await fetch(url, { method: 'GET', headers: headers });
+    var response = await fetch(url, { method: "GET", headers: headers });
     response = await response.json();
     return response   
 }
 
-addMovies = async () => {
+addMovies = async newMovie => {
 var response = await fetch(url, {method: "POST", body: JSON.stringify(newMovie), headers:headers})
 response = await response.json();
 return response
 }
 
 getMovies = async category => {
-    var response = await fetch(url + category, { method: 'GET', headers: headers });
+    var response = await fetch(url + category, { method: "GET", headers: headers });
     response = await response.json();
     return response   
 }
 
 deleteMovies = async id => {
-     await fetch(url + id, { method: 'DELETE', headers: headers });
-
+    await fetch(url + id, { method: "DELETE", headers: headers });
+ 
 }
 
 
