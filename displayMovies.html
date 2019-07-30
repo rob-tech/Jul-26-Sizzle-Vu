@@ -56,7 +56,7 @@
 
             categories.forEach(async category => {
 
-                movies = await getMovies(category);
+                movies = await getMovies(category); 
                 console.log(movies)
 
                 var currentMovies = document.querySelector("#currentMovies");
@@ -109,7 +109,7 @@
 
 
         deleteEvent = async (id) => {
-            deleteMovies(id);
+            await deleteMovies(id);
             location.assign("displayMovies.html");
         };
 

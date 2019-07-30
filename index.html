@@ -65,8 +65,8 @@
                     </div>
 
                     <div class="form-group">
-                        <a href="displayMovies.html?category=" + movies.category>  <a href="displayMovies.html?id=" + movies._id><input type="button"
-                                class="btn btn-primary" value="All Movies" /></a></a>
+                        <a href="displayMovies.html"> <input type="button" class="btn btn-primary"
+                                value="All Movies" /></a>
                     </div>
                 </form>
             </div>
@@ -81,14 +81,14 @@
         var category = null;
 
         window.onload = async () => {
-                handleSubmit = () => {
+            handleSubmit = () => {
                 event.preventDefault();
                 addNew();
             }
-            
-          
+
+
         }
-        
+
         addNew = async () => {
             var spinner = document.querySelector("#mySpinner");
             // await spinner.classList.toggle("invisible");

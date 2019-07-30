@@ -22,10 +22,9 @@ getMovies = async category => {
     return response   
 }
 
-deleteMovies = async id => {
-    await fetch(url + id, { method: 'DELETE', headers: headers });
+deleteMovies = async id => await fetch(url + id, { method: 'DELETE', headers: headers });
  
-}
+
 
 
 
